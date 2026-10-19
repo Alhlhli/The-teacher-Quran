@@ -8,7 +8,7 @@
 برنامج مكتبي قرآني تعليمي تفاعلي لنظام **Windows**، يجمع سور **الفاتحة وجزء عم (38 سورة)** بتلاوات تعليمية مكررة لترسيخ الحفظ والتدبر، مع مزامنة صوتية دقيقة على مستوى **الكلمة والآية**، وعرض مصحف المدينة المنورة، والتفاسير المعتمدة، والخرائط الذهنية للسور، ودعم العمل الكامل دون اتصال بالإنترنت (Offline).
 
 * **رابط المستودع الرسمي:** [https://github.com/Alhlhli/The-teacher-Quran](https://github.com/Alhlhli/The-teacher-Quran)
-* **الموقع الشخصي للمطور:** [عامر الحلحلي - alhlhli.github.io](https://www.google.com/search?q=https://alhlhli.github.io/)
+* **الموقع الشخصي للمطور:** [عامر الحلحلي - alhlhli.github.io]https://alhlhli.github.io/)
 
 ## ✨ أبرز المميزات
 
@@ -62,7 +62,6 @@
 The-teacher-Quran/
 ├── Program.cs                        # نقطة الدخول الرئيسية للتطبيق
 ├── QuranApp.csproj                   # ملف مشروع Visual Studio (.NET Framework 4.8)
-├── build1.bat                        # سكربت بناء الملف التنفيذي المدمج (QuranAmma.exe)
 ├── app.manifest                      # إعدادات التوافق ودعم الشاشات عالية الدقة (DPI)
 ├── 3ama.ico                          # أيقونة البرنامج الرئيسية
 ├── Models/
@@ -121,28 +120,17 @@ The-teacher-Quran/
 | `Ctrl + R` | إعادة ضبط المشغل والتحديد إلى الوضع الافتراضي |
 | `F1` | عرض نافذة اختصارات لوحة المفاتيح |
 
-## 🛠️ متطلبات التشغيل وطريقة البناء (Build)
+## 🛠️ متطلبات التشغيل
 
 ### متطلبات النظام
 * نظام التشغيل: **Windows 7 / 8.1 / 10 / 11**
 * بيئة التشغيل: **.NET Framework 4.0** أو أحدث (مثبت مسبقاً في أنظمة Windows الحديثة).
 
-### البناء السريع (ملف تنفيذي مدمج `QuranAmma.exe`)
-لا يحتاج المشروع إلى مكتبات خارجية معقدة؛ يمكنك بناء نسخة تنفيذية مدمجة بالكامل بنقرة واحدة عبر تشغيل الملف الدفعي المرفق:
-
-```bat
-build1.bat
-```
-
-يقوم السكربت تلقائياً باستدعاء مترجم سي شارب القياسي (`csc.exe`) المدمج في Windows، ودمج الأيقونات والخطوط وملفات التوقيت داخل ملف تنفيذي واحد مستقل باسم `QuranAmma.exe`.
-
-كما يمكنك فتح ملف المشروع `QuranApp.csproj` مباشرة باستخدام **Visual Studio 2019 / 2022** والضغط على `Ctrl + Shift + B` للبناء.
-
 ## 🤝 المساهمة والوقف الخيري
 
 تم تطوير هذا المشروع والمساهمة فيه بواسطة:
 * **عامر الحلحلي** — [alhlhli.github.io](https://www.google.com/search?q=https://alhlhli.github.io/) | [GitHub (@Alhlhli)](https://github.com/Alhlhli/The-teacher-Quran)
-* **espritmarin** — [عضوية منتديات المشاغب absba.cc](https://www.google.com/search?q=https://absba.cc/members/92244/)
-* **منتديات المشاغب** — [absba.cc](https://www.google.com/search?q=https://absba.cc)
+* **espritmarin** — [عضوية منتديات المشاغب absba.cc](https://absba.cc/members/92244/)
+* **منتديات المشاغب** — [absba.cc](https://absba.cc)
 
 > **حقوق النشر والوقف:** هذا العمل وقف خيري لوجه الله تعالى © 2026 — متاح للاستخدام والنشر والتطوير غير التجاري لخدمة كتاب الله الكريم.
