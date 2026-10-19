@@ -5,6 +5,8 @@
 # 📖 المصحف المعلم - الفاتحة وجزء عم (The Teacher Quran)
 
 [![أحدث إصدار - Latest Release](https://img.shields.io/github/v/release/Alhlhli/The-teacher-Quran?label=%D8%AA%D8%AD%D9%85%D9%8A%D9%84%20%D8%A3%D8%AD%D8%AF%D8%AB%20%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1&style=for-the-badge&color=D4AF37&logo=github)](https://github.com/Alhlhli/The-teacher-Quran/releases/latest)
+
+
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Alhlhli%2FThe--teacher--Quran-181717?style=for-the-badge&logo=github)](https://github.com/Alhlhli/The-teacher-Quran)
 [![.NET Framework](https://img.shields.io/badge/Windows-.NET%20Framework%204.x-512BD4?style=for-the-badge&logo=windows)](https://github.com/Alhlhli/The-teacher-Quran/releases/latest)
 [![License](https://img.shields.io/badge/License-%D9%88%D9%82%D9%81%20%D8%AE%D9%8A%D8%B1%D9%8A%20%D9%84%D9%88%D8%AC%D9%87%20%D8%A7%D9%84%D9%84%D9%87-107C41?style=for-the-badge)](https://github.com/Alhlhli/The-teacher-Quran)
