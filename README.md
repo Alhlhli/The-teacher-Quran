@@ -1,4 +1,11 @@
 # 📖 المصحف المعلم - الفاتحة وجزء عم (The Teacher Quran)
+رابط التنزيل لنظام الويندوز 
+
+[![أحدث إصدار - Latest Release](https://img.shields.io/github/v/release/Alhlhli/The-teacher-Quran?label=%D8%AA%D8%AD%D9%85%D9%8A%D9%84%20%D8%A3%D8%AD%D8%AF%D8%AB%20%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1&style=for-the-badge&color=D4AF37&logo=github)](https://github.com/Alhlhli/The-teacher-Quran/releases/latest)
+
+
+<img width="1949" height="1237" alt="image" src="https://github.com/user-attachments/assets/d2dce0bc-0279-4d07-ba05-d8dd2c42906e" />
+
 
 [](https://github.com/Alhlhli/The-teacher-Quran)
 [](https://dotnet.microsoft.com/)
@@ -23,6 +30,10 @@
 | **4** | **الشيخ الحسيني العزازي** | المصحف المعلم (حفص عن عاصم) | `3zazi` |
 | **5** | **الشيخ عبد الله الموسى** | المصحف المعلم (حفص عن عاصم) | `mousa` |
 | **6** | **الشيخ محمود خليل الحصري** | رواية ورش عن نافع | `warsh` |
+
+
+
+<img width="1947" height="1233" alt="image" src="https://github.com/user-attachments/assets/89edf8b1-ec93-44f4-b3f7-2aae6ccaea72" />
 
 ### 2. عارض المصحف التفاعلي (4 تبويبات متكاملة)
 * **🖼️ تبويب المصحف (صور الصفحات):**
@@ -50,11 +61,18 @@
 * **التحكم في سرعة التلاوة والتكرار:** دعم سرعات متعددة (`0.75x` إلى `2.0x`) وأنماط تكرار مرنة (بدون تكرار، تكرار السورة الحالية، تكرار القائمة المحددة).
 * **تسجيل الصوت والمراجعة الذاتية:** تسجيل تلاوة المستخدم بصوته بصيغة `.wav` في مجلد `Recordings` والاستماع إليها لمقارنة الحفظ.
 * **الإحصائيات ومتابعة الجلسة الأخيرة:** تتبع عدد السور المقروءة وأيام الاستماع وسجل النشاط، مع شريط ذكي لاستئناف التلاوة من آخر سورة وآية وموضع زمني توقف عنده المستخدم.
+<img width="682" height="722" alt="image" src="https://github.com/user-attachments/assets/7155ed66-8d22-4725-b253-2aba09bbeea7" />
 
 ### 4. تخصيص الواجهة واللغات والثيمات
 * **6 ثيمات لونية متناسقة:** كحلي ليلي، أخضر زمردي، عسلي كهرماني، أزرق ملكي، لؤلؤي فاتح، وبيج هادئ.
 * **3 لغات للواجهة:** العربية، الإنجليزية، والفرنسية.
 * **وضع القراءة المركّز (`F11` / `Ctrl+M`):** إخفاء القوائم الجانبية وتكبير المصحف بملء النافذة مع شريط تحكم عائم ومختصر.
+
+<img width="691" height="722" alt="image" src="https://github.com/user-attachments/assets/516620af-c32d-4bc1-a37d-652baa255d80" />
+
+
+<img width="685" height="723" alt="image" src="https://github.com/user-attachments/assets/3f3021b5-3a69-4c9e-8021-57cebbde3eb8" />
+
 
 ## 🗂️ هيكل المشروع المعماري
 
