@@ -1,0 +1,344 @@
+/* ==========================================================================
+   ux-enhancements.css — تحسينات تجربة المستخدم والعرض على الجوال
+   يُحمَّل بعد style.css ويعدّل عليه دون المساس به (سهل التعطيل بحذف الرابط).
+   ========================================================================== */
+
+/* ---------- 1) أساسيات عامة (كل الأجهزة) ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+button, [role="button"], .surah-card, .mobile-nav-tab, .mushaf-tab, .reciter-card,
+.dropdown-item, .theme-swatch, .tool-btn, .page-nav-btn, .zoom-btn, .font-zoom-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;           /* يلغي تأخير النقر المزدوج للتكبير */
+}
+
+/* حلقة تركيز واضحة للوحة المفاتيح (كانت غائبة تماماً) */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.progress-slider:focus-visible,
+.volume-slider:focus-visible { outline-offset: 6px; }
+
+/* السماح بنسخ نص التفسير والفوائد (كان النسخ ممنوعاً في كامل الصفحة) */
+.mushaf-panel-body, .tafsir-verse-body, .mindmap-topics-flow,
+.modal-body, #mushafPanelBody * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.mushaf-tab, .page-nav-btn, button { -webkit-user-select: none; user-select: none; }
+
+/* احترام تفضيل تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* إصلاح اتجاه تعبئة شريط التقديم/الصوت في الواجهة العربية (RTL):
+   شريط range يبدأ من اليمين بينما كانت التعبئة تنمو من اليسار */
+[dir="rtl"] .slider-fill { left: auto; right: 0; }
+[dir="ltr"] .slider-fill { left: 0; right: auto; }
+
+/* ---------- 2) الأجهزة التي لا تدعم التمرير بالفأرة (لمس) ---------- */
+@media (hover: none) {
+  /* زر المفضلة كان يظهر عند hover فقط = لا يُرى على الجوال إطلاقاً */
+  .card-fav-btn { opacity: 0.6; }
+  .surah-card.is-favorite .card-fav-btn { opacity: 1; }
+
+  /* منع «تعلّق» تأثيرات hover بعد اللمس */
+  .surah-card:hover, .media-btn:hover, .tool-btn:hover,
+  .reciter-card:hover, .page-nav-btn:hover { transform: none; }
+}
+
+/* منطقة لمس أوسع لزر المفضلة دون تغيير شكله */
+.card-fav-btn { position: relative; }
+.card-fav-btn::after { content: ""; position: absolute; inset: -12px; }
+
+/* ---------- 3) الجوال (≤ 860px) ---------- */
+@media (max-width: 860px) {
+
+  /* --- 3.1 الإطار العام: ارتفاع ديناميكي يراعي شريط المتصفح والشق (notch) --- */
+  html, body { height: 100%; }
+  .app-container {
+    width: 100%;
+    height: 100vh;                 /* احتياط للمتصفحات القديمة */
+    height: 100dvh;
+    padding-inline: env(safe-area-inset-left, 0) env(safe-area-inset-right, 0);
+    overflow: hidden;
+  }
+  .mobile-nav-bar {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 52px;
+    padding-top: env(safe-area-inset-top, 0);
+    padding-inline: 10px;
+    position: sticky; top: 0;
+  }
+  .workspace-layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    width: 100%;
+  }
+  .surahs-content-column, .mushaf-side-panel { height: 100%; min-height: 0; }
+
+  /* --- 3.2 شريط التنقل العلوي: أهداف لمس مريحة --- */
+  .mobile-nav-tab { min-height: 36px; padding: 6px 14px; font-size: 0.86rem; }
+  .mobile-icon-btn { width: 44px; height: 44px; padding: 0; font-size: 1.25rem; }
+  .mobile-nav-title { font-size: 0.9rem; }
+
+  /* --- 3.3 شريط القرّاء: تمرير أفقي سلس مع تلميح تلاشي في الطرف --- */
+  .reciters-bar { height: 58px; padding: 6px 10px; position: relative; }
+  .reciters-container {
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(to left, #000 90%, transparent);
+            mask-image: linear-gradient(to left, #000 90%, transparent);
+    padding-inline-end: 24px;
+  }
+  .reciter-card { height: 46px; min-width: 92px; scroll-snap-align: start; }
+  .reciter-name { font-size: 0.86rem; }
+
+  /* --- 3.4 شريط الأدوات: من ~300px إلى ~150px مع إبقاء الأهم أولاً --- */
+  .toolbar-panel { padding: 8px 10px; }
+  .toolbar-content { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; width: 100%; }
+  .toolbar-content > .toolbar-group { width: 100%; max-width: 100%; min-width: 0; margin: 0; box-sizing: border-box; justify-content: flex-start; }
+
+  /* الصف 1: زر التشغيل الرئيسي + المفضلة + خيارات */
+  .toolbar-content > .toolbar-group.tb-primary { order: 1; display: flex; flex-wrap: nowrap; gap: 6px; }
+  .action-btn-main { flex: 1 1 0; min-width: 0; height: 44px; font-size: 0.92rem; border-radius: 12px; justify-content: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #btnFilterFavorites, #btnOptionsMenu { flex: 0 0 auto; height: 44px; padding: 0 12px; border-radius: 12px; }
+  #lblFavorites { display: none; }                       /* النجمة تكفي، توفيراً للعرض */
+  #btnFilterFavorites { min-width: 46px; justify-content: center; }
+
+  /* الصف 2: البحث */
+  .search-group { order: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .search-group > * { min-width: 0; }
+  .search-group .search-label { display: none; }
+  .search-input-wrapper { flex: 1 1 100%; min-width: 0; }
+  .search-input {
+    width: 100%; box-sizing: border-box;
+    height: 44px;
+    font-size: 16px;               /* أقل من 16px يجعل iOS يكبّر الصفحة عند التركيز */
+    padding-inline: 14px 40px;
+    border-radius: 12px;
+  }
+  .clear-search-btn { width: 40px; height: 40px; }
+  .selection-summary { flex: 1 1 100%; min-width: 0; font-size: 0.76rem; margin-top: -2px; padding-inline: 4px; text-align: start; }
+
+  /* الصف 3: أدوات التحديد كشرائح أفقية قابلة للتمرير بدل التفاف متعدد الأسطر */
+  .toolbar-content > .toolbar-group.voice-practice-group { flex-wrap: nowrap; order: 4; }
+  .toolbar-content > .toolbar-group.tb-chips {
+    flex-wrap: nowrap; order: 3;
+    overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain;
+    width: calc(100% + 20px); max-width: none; margin-inline: -10px; padding: 2px 10px;
+    -webkit-mask-image: linear-gradient(to left, #000 92%, transparent);
+            mask-image: linear-gradient(to left, #000 92%, transparent);
+  }
+  .toolbar-content > .toolbar-group.tb-chips::-webkit-scrollbar { display: none; }
+  .toolbar-content .tool-btn { height: 40px; padding: 0 14px; font-size: 0.84rem; flex: 0 0 auto; border-radius: 20px; white-space: nowrap; }
+  .instant-play-label { min-height: 40px; display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; white-space: nowrap; }
+  #chkInstantPlay { width: 22px; height: 22px; }
+  /* زر التسجيل يُنقل بالـ JS إلى صف الشرائح؛ هنا يذوب غلافه ليصير شريحة */
+  .toolbar-group.voice-practice-group.mx-in-chips { display: contents; }
+
+  /* قائمة الخيارات: داخل الشاشة وبعناصر لمس كبيرة */
+  .dropdown-menu { max-width: calc(100vw - 20px); max-height: 60dvh; overflow-y: auto; }
+  .dropdown-item { min-height: 46px; padding: 10px 16px; font-size: 0.92rem; }
+
+  /* --- 3.5 بطاقات السور --- */
+  .cards-viewport {
+    padding: 10px 10px calc(14px + env(safe-area-inset-bottom, 0));
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .surah-card { min-height: 92px; padding: 10px 12px; }
+  .card-fav-btn { font-size: 1.3rem; min-width: 28px; }
+
+  /* --- 3.6 المشغل: يصبح عنصراً في التدفق (لا يغطي المحتوى) ويظهر في كل التبويبات --- */
+  .app-container > .player-island-wrapper {
+    position: relative; left: auto; right: auto; bottom: auto;
+    flex: 0 0 auto; width: 100%; z-index: 30;
+  }
+  .app-container > .player-island-wrapper .player-island {
+    border-radius: 18px 18px 0 0;
+    padding: 8px 14px 8px;
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.28);
+  }
+  .player-seek-row { height: 34px; margin: 0; gap: 8px; }
+  .progress-container { height: 34px; }                 /* منطقة لمس أكبر للتقديم */
+  .progress-container > .slider-fill { top: 14px; }                            /* يتوسّط المنطقة الأكبر */
+  .progress-slider { height: 6px; }
+  .progress-slider::-webkit-slider-thumb { width: 20px; height: 20px; }
+  .progress-slider::-moz-range-thumb { width: 20px; height: 20px; }
+  .time-label { min-width: 38px; font-size: 0.78rem; }
+
+  .player-controls-row { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+  .player-info-box {
+    display: flex; flex-direction: row; flex-wrap: nowrap; align-items: baseline; justify-content: center; gap: 8px;
+    min-width: 0; width: 100%; text-align: center;
+  }
+  .player-info-box .now-playing-title { flex: 0 1 auto; font-size: 0.95rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-info-box .now-playing-reciter { font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .player-buttons-box { flex-wrap: nowrap; justify-content: space-between; gap: 4px; width: 100%; }
+  .media-btn { width: 44px; height: 44px; flex: 0 0 auto; }
+  .media-btn.play-pause-btn { width: 54px; height: 54px; border-radius: 50%; }
+  .media-btn.speed-btn { width: 52px; font-size: 0.86rem; font-weight: 700; }
+  .player-island { padding-bottom: 8px; }
+
+  /* --- 3.7 شريط الحالة: نحيف ويراعي المنطقة الآمنة السفلية --- */
+  .status-strip {
+    flex: 0 0 auto; height: auto; min-height: 24px;
+    padding: 3px 14px calc(3px + env(safe-area-inset-bottom, 0));
+    font-size: 0.72rem;
+  }
+  .status-right { display: none; }
+
+  /* --- 3.8 عارض المصحف: أدوات مدمجة تترك مساحة للقراءة --- */
+  .mushaf-panel-header { align-items: center; }
+  .mushaf-tabs {
+    display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    overscroll-behavior-x: contain; scroll-snap-type: x proximity; flex: 1 1 auto; min-width: 0;
+    -webkit-mask-image: linear-gradient(to left, #000 88%, transparent);
+            mask-image: linear-gradient(to left, #000 88%, transparent);
+  }
+  .mushaf-tabs::-webkit-scrollbar { display: none; }
+  .mushaf-tab { flex: 0 0 auto; min-height: 46px; padding: 0 14px; font-size: 0.88rem; scroll-snap-align: start; white-space: nowrap; }
+  .mushaf-panel-expand { display: none; }                /* لا معنى للتكبير في عرض الجوال الكامل */
+
+  .mushaf-sub-bar { padding: 6px 10px; }
+  .mushaf-sub-bar select, .mushaf-quicknav select, .quicknav-select { height: 44px; font-size: 16px; border-radius: 10px; }
+  .zoom-btn, .font-zoom-btn { width: 44px; height: 44px; font-size: 1.2rem; }
+  .page-nav-btn { min-height: 44px; padding: 0 14px; }
+
+  /* التنقل السريع: صفّان مرتبان (سورة + آية) ثم (السابقة | التفسير | التالية) */
+  .mushaf-quicknav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 10px; }
+  .mushaf-quicknav .quicknav-select { flex: 1 1 calc(100% - 96px); min-width: 0; max-width: none; order: 0; }
+  .mushaf-quicknav .quicknav-select.quicknav-verse { flex: 0 0 88px; max-width: none; }
+  .mushaf-quicknav #btnQuickPrevVerse { order: 1; flex: 1 1 27%; }
+  .mushaf-quicknav #btnQuickSwitch    { order: 2; flex: 2 1 38%; }
+  .mushaf-quicknav #btnQuickNextVerse { order: 3; flex: 1 1 27%; }
+  .mushaf-quicknav #btnQuickFollow    { order: 4; flex: 1 1 100%; }
+  .mushaf-quicknav .page-nav-btn { min-width: 0; padding: 0 6px; font-size: 0.8rem; white-space: nowrap; justify-content: center; }
+
+
+  /* استغلال عرض الشاشة لصفحة المصحف على الجوال مع الحفاظ على الهوامش الجانبية */
+  .quran-verses-container { padding: 6px 4px; }
+  .mushaf-real-page { padding: 12px 10px; margin-bottom: 14px; }
+  .mushaf-panel-body {
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0));
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* زر طيّ/فتح أدوات العرض (يُضاف بالـ JS) */
+  .mx-toggle-tools {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    width: calc(100% - 20px); margin: 6px 10px 0; min-height: 42px;
+    background: var(--btn-bg); color: var(--text-primary);
+    border: 1px solid var(--card-border); border-radius: 12px;
+    font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer;
+  }
+  .mushaf-sub-bar.mx-collapsed { display: none !important; }   /* app.js يضبط display مضمّناً أحياناً */
+
+  /* --- 3.9 النوافذ المنبثقة كـ «ورقة سفلية» --- */
+  .modal-backdrop { align-items: flex-end; padding: 0; }
+  .modal-card, .modal-card-wide {
+    max-width: 100%; width: 100%;
+    max-height: 92vh; max-height: 92dvh;
+    border-radius: 20px 20px 0 0;
+    animation: mxSheetUp 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-header { position: sticky; top: 0; background: var(--bg); z-index: 2; padding: 14px 16px; }
+  .modal-title { font-size: 1.05rem; line-height: 1.5; }
+  .modal-close-btn { width: 44px; height: 44px; font-size: 1.4rem; display: inline-flex; align-items: center; justify-content: center; }
+  .modal-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .modal-footer {
+    position: sticky; bottom: 0; background: var(--bg);
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+  }
+  .modal-action-btn { min-height: 46px; padding: 0 22px; }
+  .modal-card [role="tablist"], .settings-nav-bar {
+    overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap;
+    -webkit-mask-image: linear-gradient(to left, #000 90%, transparent);
+            mask-image: linear-gradient(to left, #000 90%, transparent);
+  }
+  .modal-card [role="tablist"] > *, .settings-nav-bar > * { flex: 0 0 auto; min-height: 44px; white-space: nowrap; }
+  .modal-card input[type="text"], .modal-card input[type="search"], .modal-card select { font-size: 16px; min-height: 44px; }
+  .modal-card input[type="radio"], .modal-card input[type="checkbox"] { width: 22px; height: 22px; }
+  .modal-card label { min-height: 40px; }
+}
+
+@keyframes mxSheetUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* وضع المشغل المصغّر (يوفّر مساحة للقراءة) */
+@media (max-width: 860px) {
+  .mx-player-handle {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 22px; margin: -4px 0 2px; padding: 0;
+    background: none; border: 0; color: var(--text-secondary); cursor: pointer; font-size: 0.8rem;
+  }
+  .mx-player-handle::before { content: ""; width: 38px; height: 4px; border-radius: 2px; background: var(--card-border); }
+  .player-island.mx-mini .player-seek-row { height: 24px; }
+  .player-island.mx-mini .progress-container { height: 24px; }
+  .player-island.mx-mini .progress-container > .slider-fill { top: 9px; }
+  .player-island.mx-mini .player-info-box { display: none; }
+  .player-island.mx-mini .player-buttons-box > #btnStop,
+  .player-island.mx-mini .player-buttons-box > #btnRepeat { display: none; }
+  .player-island.mx-mini .player-buttons-box { justify-content: space-evenly; }
+  .player-island.mx-mini .media-btn { height: 40px; }
+  .player-island.mx-mini .media-btn.play-pause-btn { width: 48px; height: 48px; }
+}
+
+/* ---------- 3b) شريط التنقل العلوي على الهواتف المتوسطة ---------- */
+@media (max-width: 480px) {
+  .mobile-nav-title { display: none; }
+  .mobile-nav-bar { gap: 4px; }
+}
+
+/* ---------- 4) هواتف صغيرة جداً (≤ 360px) ---------- */
+@media (max-width: 360px) {
+  .mobile-nav-title { display: none; }
+  .media-btn { width: 40px; height: 40px; }
+  .media-btn.play-pause-btn { width: 50px; height: 50px; }
+  .media-btn.speed-btn { width: 46px; }
+  .surah-card { padding: 8px 10px; }
+}
+
+/* ---------- 5) الوضع الأفقي على الهاتف (ارتفاع قصير) ---------- */
+@media (max-width: 960px) and (max-height: 480px) and (orientation: landscape) {
+  .mobile-nav-bar { min-height: 42px; }
+  .reciters-bar { height: 48px; padding: 4px 10px; }
+  .reciter-card { height: 38px; }
+  .cards-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .surah-card { min-height: 76px; }
+  .player-seek-row, .progress-container { height: 26px; }
+  .progress-container > .slider-fill { top: 10px; }
+  .player-controls-row { flex-direction: row; align-items: center; }
+  .player-info-box { flex: 1 1 auto; justify-content: flex-start; }
+  .player-buttons-box { width: auto; flex: 0 0 auto; gap: 6px; }
+  .media-btn { width: 38px; height: 38px; }
+  .media-btn.play-pause-btn { width: 44px; height: 44px; }
+  .status-strip { display: none; }
+  /* ارتفاع قصير: تمرّر الأدوات مع البطاقات بدل أن تلتهم الشاشة */
+  .app-container[data-mobile-view="surahs"] .surahs-content-column { overflow-y: auto; display: block !important; }
+  .app-container[data-mobile-view="surahs"] .cards-viewport { overflow: visible; height: auto; flex: none; }
+  .toolbar-panel { padding: 6px 10px; }
+  .toolbar-content { flex-direction: row; flex-wrap: wrap; }
+  .toolbar-content > .toolbar-group.tb-primary { flex: 1 1 45%; width: auto; }
+  .search-group { flex: 1 1 45%; width: auto !important; }
+  .selection-summary { display: none; }
+  .player-info-box { display: none; }
+  .player-island { padding-top: 4px; padding-bottom: 4px; }
+  .mx-player-handle { display: none !important; }
+}

@@ -1,0 +1,51 @@
+/* خطوط مصحف التجويد + لوحات الوضع الغامق (تحويل الأسود إلى أبيض) */
+@font-face{font-family:'tajweed_page_1';src:url('Assets/Fonts/tajweed/p1.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_582';src:url('Assets/Fonts/tajweed/p582.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_583';src:url('Assets/Fonts/tajweed/p583.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_584';src:url('Assets/Fonts/tajweed/p584.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_585';src:url('Assets/Fonts/tajweed/p585.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_586';src:url('Assets/Fonts/tajweed/p586.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_587';src:url('Assets/Fonts/tajweed/p587.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_588';src:url('Assets/Fonts/tajweed/p588.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_589';src:url('Assets/Fonts/tajweed/p589.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_590';src:url('Assets/Fonts/tajweed/p590.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_591';src:url('Assets/Fonts/tajweed/p591.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_592';src:url('Assets/Fonts/tajweed/p592.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_593';src:url('Assets/Fonts/tajweed/p593.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_594';src:url('Assets/Fonts/tajweed/p594.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_595';src:url('Assets/Fonts/tajweed/p595.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_596';src:url('Assets/Fonts/tajweed/p596.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_597';src:url('Assets/Fonts/tajweed/p597.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_598';src:url('Assets/Fonts/tajweed/p598.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_599';src:url('Assets/Fonts/tajweed/p599.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_600';src:url('Assets/Fonts/tajweed/p600.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_601';src:url('Assets/Fonts/tajweed/p601.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_602';src:url('Assets/Fonts/tajweed/p602.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_603';src:url('Assets/Fonts/tajweed/p603.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+@font-face{font-family:'tajweed_page_604';src:url('Assets/Fonts/tajweed/p604.woff2') format('woff2');font-weight:normal;font-style:normal;font-display:swap;}
+
+/* في الثيمات الغامقة: الفهرس 0 (الأسود) يصبح أبيض مع بقاء بقية الألوان */
+@font-palette-values --tj-dark-1{font-family:'tajweed_page_1';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-582{font-family:'tajweed_page_582';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-583{font-family:'tajweed_page_583';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-584{font-family:'tajweed_page_584';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-585{font-family:'tajweed_page_585';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-586{font-family:'tajweed_page_586';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-587{font-family:'tajweed_page_587';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-588{font-family:'tajweed_page_588';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-589{font-family:'tajweed_page_589';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-590{font-family:'tajweed_page_590';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-591{font-family:'tajweed_page_591';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-592{font-family:'tajweed_page_592';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-593{font-family:'tajweed_page_593';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-594{font-family:'tajweed_page_594';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-595{font-family:'tajweed_page_595';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-596{font-family:'tajweed_page_596';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-597{font-family:'tajweed_page_597';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-598{font-family:'tajweed_page_598';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-599{font-family:'tajweed_page_599';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-600{font-family:'tajweed_page_600';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-601{font-family:'tajweed_page_601';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-602{font-family:'tajweed_page_602';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-603{font-family:'tajweed_page_603';override-colors:0 #ffffff;}
+@font-palette-values --tj-dark-604{font-family:'tajweed_page_604';override-colors:0 #ffffff;}

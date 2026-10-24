@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="calmBeige">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c1119">
+  <meta name="color-scheme" content="light dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="المصحف المعلم">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+  <title>المصحف المعلم - جزء عم</title>
+  <meta name="description" content="المصحف المعلم لجزء عم كاملاً (37 سورة) مع سورة الفاتحة بتسعة من كبار القراء المعلمين، تلاوات تعليمية مكررة، عارض المصحف الشريف والتفسير، تسجيل التلاوة، وإحصائيات الحفظ.">
+  <link rel="icon" type="image/x-icon" href="3ama.ico">
+  <link rel="manifest" href="manifest.webmanifest">
+  
+  <!-- Google Fonts: Amiri & Noto Naskh Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap"></noscript>
+  
+  <link rel="stylesheet" href="style.css?v=2.7.4">
+  <link rel="stylesheet" href="tajweed-fonts.css?v=2.7.4">
+  <link rel="stylesheet" href="ux-enhancements.css?v=2.7.4">
+</head>
+<body>
+  <div id="appContainer" class="app-container" data-mobile-view="surahs">
+
+    <!-- Mobile Top Navigation Bar (Visible only on mobile <= 860px) -->
+    <header class="mobile-nav-bar" id="mobileNavBar">
+      <div class="mobile-nav-branding">
+        <img src="3ama.ico" alt="" class="mobile-nav-icon" onerror="this.style.display='none'">
+        <span class="mobile-nav-title" id="lblMobileTitle">المصحف المعلم</span>
+      </div>
+      <div class="mobile-nav-tabs" role="tablist">
+        <button type="button" class="mobile-nav-tab active" id="btnMobileTabSurahs" data-mobile-target="surahs" title="عرض قائمة السور">
+          <span aria-hidden="true">📋</span> <span id="lblMobileTabSurahs">السور</span>
+        </button>
+        <button type="button" class="mobile-nav-tab" id="btnMobileTabMushaf" data-mobile-target="mushaf" title="عرض المصحف والتفسير">
+          <span aria-hidden="true">🕌</span> <span id="lblMobileTabMushaf">المصحف</span>
+        </button>
+      </div>
+      <div class="mobile-nav-quick-actions">
+        <button type="button" class="mobile-icon-btn" id="btnMobileThemeToggle" title="تبديل المظهر" aria-label="تبديل المظهر">🎨</button>
+        <button type="button" class="mobile-icon-btn" id="btnMobileSettingsToggle" title="الإعدادات" aria-label="الإعدادات">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Main Workspace (Split View: Cards Grid + Mushaf Viewer Panel) -->
+    <div class="workspace-layout" id="workspaceLayout">
+
+      <!-- Right Column (In RTL): Surahs Content Column (Header + Reciters + Toolbar + Cards Viewport) -->
+      <div class="surahs-content-column" id="surahsContentColumn">
+<!-- 1. Top Header -->
+    <header class="app-header" id="appHeader">
+      <div class="header-content">
+        <!-- Logo & Title -->
+        <div class="header-branding">
+          <img src="3ama.ico" alt="Icon" class="app-icon" onerror="this.style.display='none'">
+          <div class="header-titles">
+            <h1 class="app-title" id="appTitle">المصحف المعلم - جزء عم</h1>
+            <p class="app-subtitle" id="appSubtitle">تلاوات تعليمية مكررة لترسيخ الحفظ والتدبر | 37 سورة + الفاتحة</p>
+          </div>
+        </div>
+
+        <!-- Header Actions (Theme Palette, Language, Shortcuts, Stats, About, Settings) -->
+        <div class="header-actions">
+          <!-- Theme Palette (6 Themes) -->
+          <div class="theme-palette-wrapper">
+            <div class="theme-palette" id="themePalette" role="radiogroup" aria-label="Palette Selector">
+              <button type="button" class="theme-swatch" data-theme-name="warmAmber" title="عسلي كهرماني دافئ" style="background-color: rgb(180, 85, 20);"></button>
+              <button type="button" class="theme-swatch" data-theme-name="islamicEmerald" title="أخضر زمردي إسلامي" style="background-color: rgb(15, 118, 78);"></button>
+              <button type="button" class="theme-swatch" data-theme-name="midnight" title="كحلي ليلي فاخر" style="background-color: rgb(30, 25, 60);"></button>
+              <button type="button" class="theme-swatch" data-theme-name="royalBlue" title="أزرق ملكي سماوي" style="background-color: rgb(90, 105, 215);"></button>
+              <button type="button" class="theme-swatch active" data-theme-name="calmBeige" title="بيج هادئ وقور" style="background-color: rgb(218, 196, 162);"></button>
+              <button type="button" class="theme-swatch" data-theme-name="pearlLight" title="لؤلؤي فاتح نقي" style="background-color: rgb(235, 240, 248);"></button>
+            </div>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="dropdown-wrapper">
+            <button type="button" class="header-btn" id="langMenuBtn" aria-expanded="false">
+              <span class="btn-icon">🌐</span>
+              <span id="langBtnText">العربية ▾</span>
+            </button>
+            <div class="dropdown-menu" id="langDropdown">
+              <button type="button" class="dropdown-item" data-lang="ar">العربية (Arabic)</button>
+              <button type="button" class="dropdown-item" data-lang="en">English</button>
+              <button type="button" class="dropdown-item" data-lang="fr">Français</button>
+            </div>
+          </div>
+
+          <!-- Listening Statistics Button -->
+          <button type="button" class="header-btn" id="btnStats" title="إحصائيات الاستماع والإنجاز">
+            <span class="btn-icon">📊</span>
+            <span id="statsBtnText">الإحصائيات</span>
+          </button>
+
+          <!-- Shortcuts Button -->
+          <button type="button" class="header-btn" id="btnShortcuts" title="اختصارات لوحة المفاتيح (F1)">
+            <span class="btn-icon">⌨</span>
+            <span id="shortcutsBtnText">الاختصارات</span>
+          </button>
+
+          <!-- About Button -->
+          <button type="button" class="header-btn" id="btnAbout" title="حول البرنامج">
+            <span class="btn-icon">ℹ</span>
+            <span id="aboutBtnText">حول البرنامج</span>
+          </button>
+
+          <!-- Settings Button -->
+          <button type="button" class="header-btn primary-btn" id="btnSettings" title="الإعدادات والتحميل أوفلاين">
+            <span class="btn-icon">⚙</span>
+            <span id="settingsBtnText">الإعدادات والتحميل</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. Teacher Reciters Bar (5 Sheikhs Interactive Selector) -->
+    <nav class="reciters-bar" id="recitersBar" aria-label="اختيار القارئ المعلم">
+      <div class="reciters-container" id="recitersList">
+        <!-- Rendered dynamically by JS with photos and active state -->
+      </div>
+    </nav>
+
+    <!-- 3. Action Toolbar -->
+    <section class="toolbar-panel" id="toolbarPanel">
+      <div class="toolbar-content">
+        <!-- Selection Mode Buttons & Reading Mode -->
+        <div class="toolbar-group tb-chips">
+          <button type="button" class="tool-btn" id="btnSelectAll" title="تحديد جميع سور جزء عم (Ctrl+A)">
+            <span id="lblSelectAll">☑ اختيار الكل</span>
+          </button>
+          <button type="button" class="tool-btn" id="btnMultiSelect" title="نمط الاختيار المتعدد (Ctrl+2)">
+            <span id="lblMultiSelect">📑 اختيار متعدد</span>
+          </button>
+          <button type="button" class="tool-btn active-mode" id="btnSingleSelect" title="نمط الاختيار الفردي (Ctrl+1)">
+            <span id="lblSingleSelect">🎯 اختيار فردي</span>
+          </button>
+          
+          <label class="instant-play-label" id="lblInstantPlayWrap" title="تشغيل السورة مباشرة عند الضغط عليها">
+            <input type="checkbox" id="chkInstantPlay" checked>
+            <span id="lblInstantPlay">⚡ تشغيل مباشر</span>
+          </label>
+
+          <button type="button" class="tool-btn" id="btnReset" title="إعادة ضبط كامل للبرنامج والإعدادات والعرض (عدا التحميلات) (Ctrl+R)">
+            <span id="lblReset">🔄 إعادة ضبط</span>
+          </button>
+
+          <!-- Mushaf / Reading Mode Toggle Button -->
+          <button type="button" class="tool-btn highlight-tool-btn active-mode" id="btnReadingMode" title="فتح / إغلاق عارض المصحف الشريف والتفسير">
+            <span>📖</span>
+            <span id="lblReadingMode">المصحف والتفسير</span>
+          </button>
+        </div>
+
+        <!-- Student Voice Recording Practice -->
+        <div class="toolbar-group voice-practice-group" id="voicePracticeGroup">
+          <button type="button" class="tool-btn record-voice-btn" id="btnRecordVoice" title="تسجيل صوت الطالب لمقارنته بالقارئ المعلم">
+            <span class="record-dot" id="recordDot"></span>
+            <span id="lblRecordVoice">🎙 تسجيل التلاوة</span>
+            <span class="record-timer" id="recordTimer" style="display: none;">00:00</span>
+          </button>
+          
+          <button type="button" class="tool-btn" id="btnPlayRecording" title="تشغيل تسجيلك مباشرة" style="display: none;">
+            <span>🎧</span>
+            <span id="lblPlayRecording">استماع تسجيلك</span>
+          </button>
+
+          <a id="btnDownloadRecording" class="tool-btn" download="my-quran-recitation.webm" title="تحميل تسجيلك" style="display: none; text-decoration: none;">💾</a>
+        </div>
+
+        <!-- Primary Play Action & Options -->
+        <div class="toolbar-group tb-primary">
+          <button type="button" class="action-btn-main" id="btnPlayMain">
+            <span class="play-icon">▶</span>
+            <span id="lblPlayMain">تشغيل جزء عم كاملاً</span>
+          </button>
+
+          <!-- Favorites Filter Toggle -->
+          <button type="button" class="tool-btn favorite-toggle-btn" id="btnFilterFavorites" title="عرض السور المفضلة فقط">
+            <span class="star-icon">⭐</span>
+            <span id="lblFavorites">المفضلة</span>
+          </button>
+
+          <!-- Options Menu -->
+          <div class="dropdown-wrapper">
+            <button type="button" class="tool-btn" id="btnOptionsMenu" aria-expanded="false">
+              <span>⚙</span>
+              <span id="lblOptionsMenu">خيارات ▾</span>
+            </button>
+            <div class="dropdown-menu" id="optionsDropdown">
+              <button type="button" class="dropdown-item" id="optSelectAll">☑ اختيار الكل</button>
+              <button type="button" class="dropdown-item" id="optDeselectAll">☒ إلغاء تحديد الكل</button>
+              <button type="button" class="dropdown-item" id="optInvertSelection">🔄 عكس التحديد</button>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item" id="optPlaySelected">▶ تشغيل السور المحددة</button>
+              <button type="button" class="dropdown-item" id="optDownloadSelected">📥 تحميل السور المحددة أوفلاين</button>
+              <div class="dropdown-divider"></div>
+              <button type="button" class="dropdown-item" id="optOpenMindmap">🗺️ عرض الخريطة الذهنية ومحاور السورة</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Box & Selection Summary -->
+        <div class="toolbar-group search-group">
+          <label for="txtSearch" class="search-label" id="lblSearch">بحث:</label>
+          <div class="search-input-wrapper">
+            <input type="text" id="txtSearch" class="search-input" placeholder="اسم السورة أو رقمها..." autocomplete="off">
+            <button type="button" id="btnClearSearch" class="clear-search-btn" title="مسح البحث" style="display: none;">✕</button>
+          </div>
+          <span class="selection-summary" id="lblSelectionSummary">لم يتم تحديد سور</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Session Resume Banner (متابعة الاستماع من حيث توقفت) -->
+    <div class="session-resume-banner" id="sessionResumeBanner" style="display: none;">
+      <div class="resume-content">
+        <span class="resume-icon">⏱️</span>
+        <span class="resume-text" id="lblResumeText">متابعة الاستماع من الجلسة السابقة...</span>
+      </div>
+      <div class="resume-actions">
+        <button type="button" class="btn-resume-play" id="btnResumePlay">▶ متابعة الاستماع</button>
+        <button type="button" class="btn-resume-dismiss" id="btnResumeDismiss" title="تجاهل">✕</button>
+      </div>
+    </div>
+
+<main class="cards-viewport" id="cardsViewport">
+        <div class="cards-grid" id="cardsGrid">
+          <!-- 37 Surah Cards + Al-Fatihah rendered dynamically by JS -->
+        </div>
+
+        <!-- 6. Bottom Floating Player Island (شريط المشغل تحت منتصف البطاقات فقط دون تغطية المصحف) -->
+        <div class="player-island-wrapper" id="playerIslandWrapper">
+          <section class="player-island" id="playerIsland" aria-label="شريط التحكم في الصوت">
+            
+            <!-- Row 1: Seek Track -->
+            <div class="player-seek-row">
+              <span class="time-label current-time" id="lblCurrentTime">00:00</span>
+              <div class="progress-container" id="seekProgressContainer">
+                <input type="range" class="progress-slider" id="seekSlider" min="0" max="1000" value="0" step="1" aria-label="شريط التقديم والتأخير">
+                <div class="slider-fill" id="seekSliderFill" style="width: 0%;"></div>
+              </div>
+              <span class="time-label total-time" id="lblTotalTime">00:00</span>
+            </div>
+
+            <!-- Row 2: Controls, Info & Volume -->
+            <div class="player-controls-row">
+              
+              <!-- Now Playing Info Box -->
+              <div class="player-info-box">
+                <div class="now-playing-title" id="lblNowPlayingSurah">اختر سورة للبدء</div>
+                <div class="now-playing-reciter" id="lblNowPlayingReciter">بصوت: محمد صديق المنشاوي</div>
+              </div>
+
+              <!-- Playback Buttons Box -->
+              <div class="player-buttons-box">
+                <!-- Previous Button -->
+                <button type="button" class="media-btn" id="btnPrev" title="السورة السابقة (Left/Right Arrow)">
+                  <svg viewBox="0 0 24 24" class="media-svg"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+
+                <!-- Play / Pause Accent Button -->
+                <button type="button" class="media-btn play-pause-btn" id="btnPlayPause" title="تشغيل / إيقاف مؤقت (Space)">
+                  <svg viewBox="0 0 24 24" class="media-svg icon-play" id="svgPlay"><path d="M8 5v14l11-7z"/></svg>
+                  <svg viewBox="0 0 24 24" class="media-svg icon-pause" id="svgPause" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+
+                <!-- Stop Button -->
+                <button type="button" class="media-btn" id="btnStop" title="إيقاف">
+                  <svg viewBox="0 0 24 24" class="media-svg"><path d="M6 6h12v12H6z"/></svg>
+                </button>
+
+                <!-- Next Button -->
+                <button type="button" class="media-btn" id="btnNext" title="السورة التالية (Right/Left Arrow)">
+                  <svg viewBox="0 0 24 24" class="media-svg"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+
+                <!-- Repeat Mode Button -->
+                <button type="button" class="media-btn repeat-btn" id="btnRepeat" title="تبديل نمط التكرار (R)">
+                  <svg viewBox="0 0 24 24" class="media-svg" id="svgRepeat"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+                  <span class="repeat-badge" id="repeatBadge" style="display: none;">1</span>
+                </button>
+
+                <!-- Playback Speed Button -->
+                <button type="button" class="media-btn speed-btn" id="btnSpeed" title="سرعة التلاوة">
+                  <span id="lblSpeed">1.0×</span>
+                </button>
+              </div>
+
+              <!-- Volume Controls Box -->
+              <div class="player-volume-box">
+                <button type="button" class="volume-mute-btn" id="btnMute" title="كتم / تشغيل الصوت (M)">
+                  <span id="muteIcon">🔊</span>
+                </button>
+                <div class="volume-slider-wrapper">
+                  <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="85" step="1" aria-label="مستوى الصوت">
+                  <div class="slider-fill volume-fill" id="volumeSliderFill" style="width: 85%;"></div>
+                </div>
+                <span class="volume-percent" id="lblVolumePercent">85%</span>
+              </div>
+
+            </div>
+          </section>
+        </div>
+      </main>
+      </div>
+
+            <!-- Draggable Splitter Divider between Cards Grid and Mushaf Panel -->
+      <div class="workspace-splitter" id="mushafResizer" role="separator" aria-orientation="vertical" title="اسحب لتكبير أو تصغير عرض نافذة المصحف"></div>
+
+      <!-- Side Mushaf & Tafsir Panel (عارض المصحف الشريف والتفسير - معروض دائماً) -->
+      <aside class="mushaf-side-panel" id="mushafSidePanel">
+        <!-- Mushaf Panel Header with Tabs -->
+        <div class="mushaf-panel-header">
+          <div class="mushaf-tabs" role="tablist">
+            <button type="button" class="mushaf-tab" data-tab="image" id="tabMushafImage">🖼️ صفحة المصحف</button>
+            <button type="button" class="mushaf-tab active" data-tab="text" id="tabMushafText">📜 الرسم العثماني</button>
+            <button type="button" class="mushaf-tab" data-tab="info" id="tabMushafInfo">ℹ️ مقاصد السورة</button>
+            <button type="button" class="mushaf-tab" data-tab="tafsir" id="tabMushafTafsir">📚 التفاسير</button>
+            <button type="button" class="mushaf-tab" data-tab="mindmap" id="tabMushafMindmap">📚 الموسوعات</button>
+          </div>
+          <!-- Maximize / Toggle full width button instead of close button (always visible) -->
+          <button type="button" class="mushaf-panel-expand" id="btnMaximizeMushaf" title="تكبير / استعادة عرض نافذة المصحف">⛶</button>
+        </div>
+
+        <!-- Sub Toolbar: Page Navigation / Zoom / Source Picker / Font Family -->
+        <div class="mushaf-sub-bar" id="mushafSubBar">
+          <!-- Page Switcher & Zoom Controls (For Image Tab) -->
+          <div class="mushaf-page-controls" id="mushafPageControls">
+            <button type="button" class="page-nav-btn" id="btnPagePrev" title="الصفحة السابقة">◀ السابقة</button>
+            <span class="mushaf-page-badge" id="lblMushafPageNumber">صفحة 582</span>
+            <button type="button" class="page-nav-btn" id="btnPageNext" title="الصفحة التالية">التالية ▶</button>
+            
+            <!-- Zoom Controls for Mushaf Page Image -->
+            <div class="mushaf-zoom-group" id="mushafZoomGroup" title="تكبير / تصغير صفحة المصحف">
+              <button type="button" class="zoom-btn" id="btnZoomOut" title="تصغير الصورة (Zoom -)">−</button>
+              <span class="zoom-percent-badge" id="lblZoomPercent">100%</span>
+              <button type="button" class="zoom-btn" id="btnZoomIn" title="تكبير الصورة (Zoom +)">+</button>
+              <button type="button" class="zoom-btn" id="btnZoomReset" title="إعادة ضبط الحجم الأصلي (100%)">↺</button>
+            </div>
+
+            <select id="selMushafEdition" class="mushaf-edition-select" title="اختر طبعة المصحف الشريف">
+              <!-- تُعبَّأ الخيارات ديناميكياً من MUSHAF_SOURCES في app.js -->
+            </select>
+          </div>
+
+          <!-- Font Size Adjuster & Font Family Selector (For Text Tab) -->
+          <div class="mushaf-font-controls" id="mushafFontControls" style="display: none;">
+            <select id="selQuranFontFamily" class="quran-font-select" title="اختر خط المصحف والرسم العثماني">
+              <option value="qcf4" selected>مصحف مجمع الملك فهد (QCF4)</option>
+              <option value="tajweed">🎨 مصحف التجويد (تلوين التجويد)</option>
+              <option value="uthmanic">خط نصي يونيكود — عثماني حفص (KFGQPC HAFS)</option>
+              <option value="naskh">خط النسخ العثماني (Uthman Naskh)</option>
+              <option value="mequran">خط مكة النصي (ME Quran)</option>
+              <option value="amiri">خط المصحف الأميري (Amiri Quran)</option>
+            </select>
+            <button type="button" class="font-zoom-btn" id="btnFontMinus" title="تصغير خط المصحف وعرضه (Ctrl + عجلة الفأرة)">−</button>
+            <span id="lblFontSizePercent" title="انقر لإعادة الحجم الأصلي">100%</span>
+            <button type="button" class="font-zoom-btn" id="btnFontPlus" title="تكبير خط المصحف وعرضه (Ctrl + عجلة الفأرة)">+</button>
+            <button type="button" class="page-nav-btn line-mode-btn" id="btnToggleMushafLines" title="تبديل بين أسطر المصحف الحقيقي (15 سطراً) والقراءة المتصلة">📑 أسطر المصحف: مفعّل</button>
+          </div>
+        </div>
+
+        <!-- التنقل السريع: السورة / الآية / التبديل بين النص والتفسير -->
+        <div class="mushaf-quicknav" id="mushafQuickNav" style="display: none;">
+          <select id="selQuickSurah" class="quicknav-select" title="الانتقال إلى سورة" aria-label="السورة"></select>
+          <select id="selQuickVerse" class="quicknav-select quicknav-verse" title="الانتقال إلى آية" aria-label="الآية"></select>
+          <button type="button" class="page-nav-btn" id="btnQuickPrevVerse" title="الآية السابقة">◀ السابقة</button>
+          <button type="button" class="page-nav-btn" id="btnQuickNextVerse" title="الآية التالية">التالية ▶</button>
+          <button type="button" class="page-nav-btn quicknav-switch" id="btnQuickSwitch">📚 تفسير الآية</button>
+          <button type="button" class="page-nav-btn quicknav-follow" id="btnQuickFollow" title="العودة إلى موضع التلاوة الحالي" style="display: none;">🎯 تتبع التلاوة</button>
+        </div>
+
+        <!-- Mushaf Content Container -->
+        <div class="mushaf-panel-body" id="mushafPanelBody">
+          
+          <!-- Tab 1: Mushaf Image View -->
+          <div class="mushaf-tab-content" id="contentMushafImage">
+            <div class="mushaf-image-wrapper" id="mushafImageWrapper">
+              <div class="mushaf-loading-spinner" id="mushafLoadingSpinner" style="display: none;">
+                <div class="spinner-circle"></div>
+                <span>جاري تحميل صفحة المصحف...</span>
+              </div>
+              <img id="imgMushafPage" class="mushaf-page-image" alt="صفحة المصحف الشريف">
+            </div>
+          </div>
+
+          <!-- Tab 2: Quran Uthmani Text View -->
+          <div class="mushaf-tab-content active" id="contentMushafText">
+            <div class="quran-text-header" id="quranTextHeader">
+              <div class="surah-vocalized-title" id="lblTextSurahTitle">سُورَةُ النَّبَإِ</div>
+              <div class="basmala-text" id="lblBasmala">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+            </div>
+            <!-- تلميحات ألوان التجويد (تظهر مع خط التجويد فقط) -->
+            <div class="tajweed-legend" id="tajweedLegend" style="display: none;">
+              <div class="tajweed-legend-bar">
+                <div class="tajweed-legend-keys">
+                  <span class="tj-key tj-silent"><i></i>الحرف الساكن</span>
+                  <span class="tj-key tj-ghunnah"><i></i>غنّة / إخفاء</span>
+                  <span class="tj-key tj-qalqala"><i></i>قلقلة</span>
+                  <span class="tj-key tj-tafkhim"><i></i>تفخيم</span>
+                  <span class="tj-key tj-mad-tabee"><i></i>مدّ طبيعي</span>
+                  <span class="tj-key tj-mad-munfasil"><i></i>مدّ منفصل</span>
+                  <span class="tj-key tj-mad-muttasil"><i></i>مدّ متّصل</span>
+                  <span class="tj-key tj-mad-lazim"><i></i>مدّ لازم</span>
+                </div>
+                <button type="button" class="tajweed-legend-toggle" id="btnTajweedDetails" aria-expanded="false">تفاصيل ⌄</button>
+              </div>
+              <div class="tajweed-legend-details" id="tajweedLegendDetails" style="display: none;">
+                <div class="tj-detail tj-silent"><i></i><b>الحرف الساكن</b><span class="tj-sep">—</span><span>حرف لا يُنطق في الوصل (همزة وصل، لام شمسية)</span></div>
+                <div class="tj-detail tj-ghunnah"><i></i><b>غنّة / إخفاء</b><span class="tj-sep">—</span><span>صوت الغنّة عند الإدغام والإخفاء والإقلاب</span></div>
+                <div class="tj-detail tj-qalqala"><i></i><b>قلقلة</b><span class="tj-sep">—</span><span>اضطراب صوت الحرف عند سكونه (ق ط ب ج د)</span></div>
+                <div class="tj-detail tj-tafkhim"><i></i><b>تفخيم الصوت</b><span class="tj-sep">—</span><span>تفخيم لام لفظ الجلالة ونحوها</span></div>
+                <div class="tj-detail tj-mad-tabee"><i></i><b>مدّ طبيعي</b><span class="tj-sep">—</span><span>حركتان</span></div>
+                <div class="tj-detail tj-mad-munfasil"><i></i><b>مدّ جائز منفصل</b><span class="tj-sep">—</span><span>٢ أو ٤ أو ٥ حركات</span></div>
+                <div class="tj-detail tj-mad-muttasil"><i></i><b>مدّ واجب متّصل</b><span class="tj-sep">—</span><span>٤ أو ٥ حركات</span></div>
+                <div class="tj-detail tj-mad-lazim"><i></i><b>مدّ لازم</b><span class="tj-sep">—</span><span>٦ حركات</span></div>
+              </div>
+            </div>
+            <div class="quran-verses-container" id="quranVersesContainer">
+              <!-- Verses inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 3: Surah Info & Topics -->
+          <div class="mushaf-tab-content" id="contentMushafInfo">
+            <div class="surah-info-card">
+              <h3 class="info-card-title" id="infoSurahTitle">سورة النبأ</h3>
+              <div class="info-badges-row" id="infoBadgesRow">
+                <span class="info-pill" id="pillRevelation">مكية</span>
+                <span class="info-pill" id="pillOrder">ترتيب النزول: 80</span>
+                <span class="info-pill" id="pillAyahs">عدد الآيات: 40</span>
+                <span class="info-pill" id="pillPage">الصفحة: 582</span>
+              </div>
+              <div class="info-section">
+                <h4 class="info-section-title">✨ مقاصد السورة وفضائلها:</h4>
+                <p class="info-section-body" id="lblSurahOverview">جاري التحميل...</p>
+              </div>
+              <div class="info-section">
+                <h4 class="info-section-title">📌 محاور وموضوعات السورة:</h4>
+                <p class="info-section-body" id="lblSurahTopics">جاري التحميل...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Tafsir View -->
+          <div class="mushaf-tab-content" id="contentMushafTafsir">
+            <div class="tafsir-header">
+              <h3 class="tafsir-surah-title" id="lblTafsirSurahTitle">تفسير سورة النبأ</h3>
+              <select id="selTafsirEdition" class="tafsir-edition-select" title="اختر كتاب التفسير">
+                <option value="muyassar">📖 التفسير الميسر (مجمع الملك فهد)</option>
+                <option value="saadi">📗 تفسير السعدي (تيسير الكريم الرحمن)</option>
+                <option value="ibnkathir">📚 تفسير ابن كثير (تفسير القرآن العظيم)</option>
+                <option value="baghawi">📜 تفسير البغوي (معالم التنزيل)</option>
+                <option value="qurtubi">⚖️ تفسير القرطبي (الجامع لأحكام القرآن)</option>
+                <option value="tabari">🏛️ تفسير الطبري (جامع البيان)</option>
+                <option value="jalalayn">📝 تفسير الجلالين</option>
+                <option value="mokhtasar">📑 المختصر في تفسير القرآن الكريم</option>
+                <option value="waseet">🖋️ التفسير الوسيط (طنطاوي)</option>
+              </select>
+            </div>
+            <div class="tafsir-verses-list" id="tafsirVersesList">
+              <!-- Tafsir items inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Tab 5: Surah Mindmap & Encyclopedia View -->
+          <div class="mushaf-tab-content" id="contentMushafMindmap">
+            <div class="mindmap-container" id="mindmapContainer">
+              <div class="mindmap-header">
+                <h3 class="mindmap-title" id="lblMindmapTitle">📖 موسوعات السورة</h3>
+                <div class="mindmap-actions">
+                  <button type="button" class="encyclopedia-print-btn" id="btnPrintSurahEncyclopedia" title="طباعة أو حفظ موسوعة السورة كملف PDF">🖨️ طباعة الموسوعة PDF</button>
+                </div>
+              </div>
+              <div class="mindmap-topics-flow" id="mindmapTopicsFlow">
+                <!-- Mindmap blocks inserted dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div><!-- /.workspace-layout -->
+
+    <!-- 7. Bottom Status Strip -->
+    <footer class="status-strip" id="statusStrip">
+      <div class="status-left">
+        <span class="status-indicator"></span>
+        <span class="status-text" id="lblStatus">جاهز للاستماع والتدبر</span>
+      </div>
+      <div class="status-right">
+        <span class="status-info" id="lblInfo">38 سورة • الفاتحة وجزء عم</span>
+      </div>
+    </footer>
+
+  </div><!-- /#appContainer -->
+
+  <!-- Audio Element -->
+  <audio id="audioPlayer" preload="auto"></audio>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal 1: Listening Statistics Dialog -->
+  <div class="modal-backdrop" id="statsModal" role="dialog" aria-modal="true" aria-labelledby="statsTitle" style="display: none;">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-header">
+        <h3 class="modal-title" id="statsTitle">📊 إحصائيات الاستماع والإنجاز</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="statsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="stats-overview-grid">
+          <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-value" id="statTotalMinutes">0 دقيقة</div>
+            <div class="stat-label">إجمالي وقت الاستماع</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div class="stat-value" id="statCompletedCount">0</div>
+            <div class="stat-label">مرات إكمال السور</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-value" id="statTopSurah">-</div>
+            <div class="stat-label">السورة الأكثر استماعاً</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🎙️</div>
+            <div class="stat-value" id="statTopReciter">-</div>
+            <div class="stat-label">القارئ الأكثر اختياراً</div>
+          </div>
+        </div>
+
+        <div class="stats-table-wrapper">
+          <h4 class="stats-table-title">سجل استماع سور جزء عم:</h4>
+          <table class="stats-detail-table">
+            <thead>
+              <tr>
+                <th>السورة</th>
+                <th>عدد المرات</th>
+                <th>إجمالي الوقت</th>
+                <th>آخر استماع</th>
+              </tr>
+            </thead>
+            <tbody id="statsTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn clear-cache-btn" id="btnResetStats">تصفير الإحصائيات</button>
+        <button type="button" class="btn modal-action-btn" data-close-modal="statsModal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Shortcuts Dialog -->
+  <div class="modal-backdrop" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="shortcutsTitle">⌨️ اختصارات لوحة المفاتيح</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="shortcutsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <table class="shortcuts-table">
+          <tbody>
+            <tr><td class="key-cell"><kbd>Space</kbd></td><td id="scPlayPause">تشغيل / إيقاف مؤقت</td></tr>
+            <tr><td class="key-cell"><kbd>➔</kbd> / <kbd>⬅</kbd></td><td id="scNextPrev">السورة التالية / السابقة</td></tr>
+            <tr><td class="key-cell"><kbd>▲</kbd> / <kbd>▼</kbd></td><td id="scVolume">رفع / خفض مستوى الصوت</td></tr>
+            <tr><td class="key-cell"><kbd>M</kbd></td><td id="scMute">كتم / استعادة الصوت</td></tr>
+            <tr><td class="key-cell"><kbd>R</kbd></td><td id="scRepeat">تبديل نمط التكرار (سورة / كل / لا)</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>A</kbd></td><td id="scSelectAll">تحديد جميع سور جزء عم</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td id="scDeselectAll">إلغاء تحديد كل السور</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>1</kbd></td><td id="scSingleMode">نمط الاختيار الفردي</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>2</kbd></td><td id="scMultiMode">نمط الاختيار المتعدد</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>M</kbd></td><td>فتح / إغلاق عارض المصحف والتفسير</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td id="scReset">إعادة ضبط كامل للبرنامج (عدا التحميلات)</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>T</kbd></td><td id="scTheme">تبديل ألوان الثيم (6 ثيمات)</td></tr>
+            <tr><td class="key-cell"><kbd>Ctrl</kbd> + <kbd>L</kbd></td><td id="scLang">تغيير لغة البرنامج</td></tr>
+            <tr><td class="key-cell"><kbd>F1</kbd></td><td id="scHelp">عرض نافذة الاختصارات</td></tr>
+            <tr><td class="key-cell"><kbd>Esc</kbd></td><td id="scClose">إغلاق النوافذ المنبثقة وعارض المصحف</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn modal-action-btn" data-close-modal="shortcutsModal" id="btnShortcutsClose">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: About Dialog -->
+  <div class="modal-backdrop" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="about-header-titles">
+          <h3 class="modal-title" id="aboutTitle">المصحف المعلم - جزء عم</h3>
+          <span class="about-version" id="aboutVersion">الإصدار 2.7.0</span>
+        </div>
+        <button type="button" class="modal-close-btn" data-close-modal="aboutModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="about-desc" id="aboutDesc">
+          برنامج قرآني تعليمي تفاعلي لجزء عم كاملاً (37 سورة) مع سورة الفاتحة بتسعة من كبار القراء المعلمين، يتيح الاستماع والتكرار لترسيخ الحفظ، وعارض المصحف الشريف والتفاسير، مع تسجيل صوت الطالب ومقارنته بالمعلم، والتحميل للاستخدام دون اتصال، مع تحكم سلس ودعم كامل للغات والثيمات المتعددة.
+        </p>
+        
+        <div class="about-credits-box">
+          <div class="credits-header" id="creditsHeader">✨ تم التطوير والبرمجة بواسطة:</div>
+          <div class="credits-links">
+            <a href="https://alhlhli.github.io/" target="_blank" rel="noopener noreferrer" class="credit-link">
+              ★ عامر الحلحلي (https://alhlhli.github.io/)
+            </a>
+          </div>
+        </div>
+
+        <div class="about-reciters-list">
+          <h4 id="aboutRecitersTitle">🎙 القراء المعلمون (9 قراء معلمين):</h4>
+          <ul>
+            <li>محمد صديق المنشاوي (المصحف المعلم)</li>
+            <li>ماهر المعيقلي (المصحف المعلم)</li>
+            <li>عبد البارئ محمد (المصحف المعلم)</li>
+            <li>الحسيني العزازي (المصحف المعلم)</li>
+            <li>عبد الله الموسى (المصحف المعلم)</li>
+            <li>محمود خليل الحصري (المصحف المعلم)</li>
+            <li>سعد بن سعيد الغامدي (المصحف المعلم)</li>
+            <li>فارس عباد (المصحف المعلم)</li>
+            <li>محمود خليل الحصري (المصحف المعلم - رواية ورش عن نافع)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn modal-action-btn" data-close-modal="aboutModal" id="btnAboutClose">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Settings & Downloads Dialog (الألسنة الأربعة المتوافقة مع التطبيق المصدري) -->
+  <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" style="display: none;">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-header">
+        <h3 class="modal-title" id="settingsTitle">⚙️ خيارات البرنامج وإعدادات التلاوة والتحميل</h3>
+        <button type="button" class="modal-close-btn" data-close-modal="settingsModal">✕</button>
+      </div>
+      
+      <!-- Settings Sub Tabs Navigation -->
+      <div class="settings-nav-bar" role="tablist">
+        <button type="button" class="settings-nav-btn active" data-settings-tab="general" id="tabSetGeneral">🎨 المظهر واللغة</button>
+        <button type="button" class="settings-nav-btn" data-settings-tab="customization" id="tabSetCustom">📐 تخصيص الواجهة</button>
+        <button type="button" class="settings-nav-btn" data-settings-tab="audio" id="tabSetAudio">🎙️ التلاوة والصوت</button>
+        <button type="button" class="settings-nav-btn" data-settings-tab="downloads" id="tabSetDownloads">📥 تحميل الأوفلاين</button>
+      </div>
+
+      <div class="modal-body settings-modal-body">
+        
+        <!-- Tab 1: Appearance & Language -->
+        <div class="settings-tab-pane active" id="paneSetGeneral">
+          <fieldset class="settings-group">
+            <legend id="legendGeneral">المظهر والألوان</legend>
+            <div class="settings-row">
+              <div class="setting-item">
+                <label for="selTheme" id="lblSettingTheme">الثيم اللوني المفضل:</label>
+                <select id="selTheme" class="settings-select">
+                  <option value="midnight">كحلي ليلي (Midnight)</option>
+                  <option value="islamicEmerald">أخضر زمردي إسلامي (Emerald)</option>
+                  <option value="warmAmber">عسلي كهرماني دافئ (Amber)</option>
+                  <option value="royalBlue">أزرق ملكي سماوي (Royal Blue)</option>
+                  <option value="pearlLight">لؤلؤي فاتح نقي (Pearl Light)</option>
+                  <option value="calmBeige">بيج هادئ وقور (Calm Beige)</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label for="selLang" id="lblSettingLang">لغة الواجهة:</label>
+                <select id="selLang" class="settings-select">
+                  <option value="ar">العربية (Arabic)</option>
+                  <option value="en">English</option>
+                  <option value="fr">Français</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend id="legendNameFormat">صيغة عرض أسماء القراء في الشريط العلوي</legend>
+            <div class="radio-options">
+              <label class="radio-label">
+                <input type="radio" name="reciterNameFormat" value="full" id="rbFullName" checked>
+                <span id="lblShowFullNameOption">عرض الاسم الكامل للقارئ (مثال: محمد صديق المنشاوي)</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="reciterNameFormat" value="short" id="rbShortName">
+                <span id="lblShowTitleOnlyOption">عرض اللقب فقط (مثال: المنشاوي)</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Tab 2: UI Customization -->
+        <div class="settings-tab-pane" id="paneSetCustomization" style="display: none;">
+          <fieldset class="settings-group">
+            <legend id="legendMushafLines">📖 خيارات خط وعرض المصحف (QCF4)</legend>
+            <div class="checkbox-list">
+              <label class="check-label">
+                <input type="checkbox" id="chkPreserveMushafLines" checked>
+                <span id="lblPreserveMushafLines">الحفاظ على صفحات المصحف في النص القرآني (QCF4) — 15 سطراً للصفحة كما في مصحف مجمع الملك فهد</span>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="settings-group">
+            <legend id="legendCardSize">حجم بطاقات السور في القائمة</legend>
+            <div class="setting-item">
+              <select id="selCardSize" class="settings-select">
+                <option value="small">صغير (120 × 70)</option>
+                <option value="medium" selected>قياسي متوازن (145 × 80)</option>
+                <option value="large">كبير وواضح (175 × 95)</option>
+                <option value="xlarge">كبير جداً (210 × 115)</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend id="legendUiImprovements">🖥️ تحسينات العرض والقراءة</legend>
+            <div class="setting-item">
+              <label for="selUiSize" id="lblUiSize">حجم خط البرنامج بشكل عام:</label>
+              <select id="selUiSize" class="settings-select">
+                <option value="15">صغير (15px)</option>
+                <option value="17" selected>عادي (17px)</option>
+                <option value="19">كبير (19px)</option>
+                <option value="21">كبير جداً (21px)</option>
+              </select>
+            </div>
+            <div class="checkbox-list">
+              <label class="check-label">
+                <input type="checkbox" id="chkDarkImages" checked>
+                <span id="lblDarkImages">تغميق صور المصحف تلقائياً عند تفعيل الثيمات الغامقة</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend id="legendToolbarBtns">أزرار شريط الأدوات الرئيسي (تفعيل / إخفاء)</legend>
+            <div class="checkbox-grid">
+              <label class="check-label"><input type="checkbox" id="chkShowSelectAll" checked> <span>زر «تحديد الكل»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowMultiSelect" checked> <span>زر «اختيار متعدد»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowSingleSelect" checked> <span>زر «اختيار فردي»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowInstantPlay" checked> <span>خيار «تشغيل مباشر»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowReset" checked> <span>زر «إعادة ضبط»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowFavorites" checked> <span>زر «المفضلة ⭐»</span></label>
+              <label class="check-label"><input type="checkbox" id="chkShowVoiceRecord" checked> <span>زر «تسجيل صوتي 🎙️»</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Tab 3: Recitation & Audio Settings -->
+        <div class="settings-tab-pane" id="paneSetAudio" style="display: none;">
+          <fieldset class="settings-group">
+            <legend id="legendAudioOptions">خيارات الاستماع والتقديم التلقائي</legend>
+            <div class="checkbox-list">
+              <label class="check-label">
+                <input type="checkbox" id="chkAutoAdvance" checked>
+                <span id="lblAutoAdvance">الانتقال التلقائي للسورة التالية عند انتهاء التلاوة</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" id="chkAutoResume" checked>
+                <span id="lblAutoResume">حفظ موضع الاستماع الأخير وعرض شريط المتابعة التلقائية</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" id="chkWordSyncActive" checked>
+                <span id="lblWordSyncActive">تفعيل المزامنة اللحظية للكلمات والآيات أثناء التلاوة</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group">
+            <legend>سرعة التلاوة الافتراضية</legend>
+            <div class="setting-item">
+              <select id="selDefaultSpeed" class="settings-select">
+                <option value="0.75">0.75× (بطيئة للتعليم والتدبر)</option>
+                <option value="1" selected>1.0× (السرعة الطبيعية المعتدلة)</option>
+                <option value="1.25">1.25× (أسرع قليلاً للمراجعة)</option>
+                <option value="1.5">1.5× (سريعة للحرد والتثبيت)</option>
+              </select>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Tab 4: Offline Browser Cache & Storage -->
+        <div class="settings-tab-pane" id="paneSetDownloads" style="display: none;">
+          <fieldset class="settings-group">
+            <legend id="legendBrowserCache">⚡ خيارات التخزين المؤقت في المتصفح (Offline Cache)</legend>
+            <div class="checkbox-list">
+              <label class="check-label">
+                <input type="checkbox" id="chkEnableBrowserCache" checked>
+                <span id="lblEnableBrowserCache">تفعيل الذاكرة المؤقتة للمتصفح للاستماع والتصفح بدون إنترنت (Offline Cache)</span>
+              </label>
+              <label class="check-label">
+                <input type="checkbox" id="chkAutoCachePlayed" checked>
+                <span id="lblAutoCachePlayed">حفظ تلقائي لجميع ما يتم الاستماع إليه أو قراءته في ذاكرة المتصفح للرجوع إليه أوفلاين</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="settings-group download-manager-group">
+            <legend id="legendDownloads">مدير تحميل وحفظ تلاوات جزء عم في ذاكرة المتصفح</legend>
+            
+            <div class="download-status-info">
+              <p id="lblStorageStatus">حالة التخزين المحلي: جاري الفحص...</p>
+              <div class="download-progress-bar-wrapper">
+                <div class="download-progress-bar" id="downloadProgressBar" style="width: 0%;"></div>
+              </div>
+              <div class="download-progress-labels">
+                <span id="downloadCurrentFile">جاهز للتحميل</span>
+                <span id="downloadPercent">0%</span>
+              </div>
+            </div>
+
+            <div class="download-actions-row">
+              <button type="button" class="btn download-btn" id="btnDownloadCurrentReciter">
+                📥 <span id="lblDownloadOneReciter">تحميل جزء عم لهذا القارئ (38 سورة)</span>
+              </button>
+              <button type="button" class="btn download-btn" id="btnDownloadAllReciters">
+                📦 <span id="lblDownloadAllReciters">تحميل جزء عم لجميع الـ 9 قراء (342 ملفاً)</span>
+              </button>
+              <button type="button" class="btn download-cancel-btn" id="btnCancelDownload" style="display: none;">
+                ✕ <span id="lblDownloadCancel">إلغاء التحميل</span>
+              </button>
+              <button type="button" class="btn clear-cache-btn" id="btnClearOfflineCache" title="حذف الملفات المحملة لتفريغ المساحة">
+                🗑 <span id="lblClearCache">تفريغ الذاكرة</span>
+              </button>
+            </div>
+          </fieldset>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn modal-action-btn" data-close-modal="settingsModal" id="btnSettingsClose">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- صوت تسجيل الطالب (يُشغَّل مباشرة بدون نافذة منبثقة) -->
+  <audio id="recordedAudioElement" preload="auto" style="display: none;"></audio>
+
+  <!-- حاوية الطباعة المباشرة للموسوعة (تظهر فقط أثناء طباعة المتصفح / حفظ PDF) -->
+  <div id="encyclopediaPrintRoot" class="encyclopedia-print-root" aria-hidden="true"></div>
+
+  <!-- Scripts -->
+  <script src="quran-data.js"></script>
+  <script src="qcf4-data.js"></script>
+  <script src="quran-timing.js"></script>
+  <script src="tajweed-data.js"></script>
+  <script src="chapter-studies.js"></script>
+  <script src="almatny-data.js"></script>
+  <script src="basmala-svg.js"></script>
+  <script src="midad-audio.js"></script>
+  <script src="app.js?v=2.7.4"></script>
+  <script src="ux-enhancements.js?v=2.7.4"></script>
+</body>
+</html>
