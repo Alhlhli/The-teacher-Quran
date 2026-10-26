@@ -53,15 +53,23 @@
     (mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place));
   });
 
-  /* ---------- 2b) مقبض لتصغير المشغل وتوفير مساحة القراءة ---------- */
+  /* ---------- 2b) مقبض لتصغير المشغل وتوفير مساحة القراءة (يُصغّر تلقائياً في تبويب المصحف) ---------- */
   safe('miniPlayer', () => {
     const island = $('playerIsland');
+    const app = $('appContainer');
     if (!island) return;
     const h = document.createElement('button');
     h.type = 'button'; h.className = 'mx-player-handle';
     h.style.display = 'none';
     const KEY = 'mx_mini_player';
-    const get = () => { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
+    // في عرض المصحف على الجوال يكون المشغل مصغراً افتراضياً لتوفير أكبر مساحة للمصحف
+    const get = () => {
+      try {
+        const v = localStorage.getItem(KEY);
+        if (v !== null) return v === '1';
+      } catch (e) {}
+      return true;
+    };
     const set = (v) => { try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} };
     const render = () => {
       const mini = island.classList.contains('mx-mini');
@@ -72,11 +80,15 @@
     island.insertBefore(h, island.firstChild);
     const apply = () => {
       h.style.display = mq.matches ? 'flex' : 'none';
-      island.classList.toggle('mx-mini', mq.matches && get());
+      const inMushaf = app && app.getAttribute('data-mobile-view') === 'mushaf';
+      island.classList.toggle('mx-mini', mq.matches && (inMushaf || get()));
       render();
     };
     apply();
     (mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply));
+    if (app) {
+      new MutationObserver(apply).observe(app, { attributes: true, attributeFilter: ['data-mobile-view'] });
+    }
   });
 
   /* ---------- 3) زر الرجوع في أندرويد/المتصفح يعود لقائمة السور ----------
@@ -109,9 +121,10 @@
     });
   });
 
-  /* ---------- 4) طيّ أدوات عرض المصحف (الطبعة/التكبير/الخط) على الجوال ---------- */
+  /* ---------- 4) دمج زر أدوات عرض المصحف داخل شريط التبويبات وطيّ الأدوات افتراضياً على الجوال ---------- */
   safe('collapseTools', () => {
     const sub = $('mushafSubBar');
+    const header = document.querySelector('.mushaf-panel-header');
     if (!sub || !sub.parentNode) return;
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -121,15 +134,18 @@
     const render = () => {
       const collapsed = sub.classList.contains('mx-collapsed');
       btn.setAttribute('aria-expanded', String(!collapsed));
+      btn.classList.toggle('active', !collapsed);
       btn.textContent = collapsed
-        ? L('⚙ أدوات العرض (الخط، التكبير، الطبعة)', '⚙ Display tools', '⚙ Outils d’affichage')
-        : L('▲ إخفاء أدوات العرض', '▲ Hide display tools', '▲ Masquer les outils');
+        ? L('⚙ الخط والعرض', '⚙ Display', '⚙ Affichage')
+        : L('✕ إخفاء', '✕ Hide', '✕ Masquer');
+      btn.title = L('إظهار/إخفاء أدوات الخط والتكبير والطبعة', 'Toggle display tools', 'Outils d’affichage');
     };
     btn.addEventListener('click', () => { sub.classList.toggle('mx-collapsed'); render(); });
-    sub.parentNode.insertBefore(btn, sub);
+    if (header) header.appendChild(btn);
+    else sub.parentNode.insertBefore(btn, sub);
 
     const apply = () => {
-      btn.style.display = mq.matches ? '' : 'none';
+      btn.style.display = mq.matches ? 'inline-flex' : 'none';
       if (mq.matches) { if (!btn.dataset.init) { sub.classList.add('mx-collapsed'); btn.dataset.init = '1'; } }
       else sub.classList.remove('mx-collapsed');
       render();

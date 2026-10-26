@@ -1,7 +1,7 @@
 /* Service Worker — تخزين مؤقت لهيكل التطبيق ليعمل بسرعة وبدون إنترنت.
    - لا يعترض الصوت (mp3/Range) ولا الطلبات الخارجية (روابط مداد المتجددة).
    - غيّر VERSION عند كل إصدار لتحديث الذاكرة. */
-const VERSION = 'v2.7.4';
+const VERSION = 'v2.7.5';
 const SHELL = `quran-shell-${VERSION}`;
 const RUNTIME = `quran-runtime-${VERSION}`;
 

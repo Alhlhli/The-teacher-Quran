@@ -2951,6 +2951,10 @@ function applyLanguage(lang) {
     renderSurahCards();
     updateMediaSession();
     loadSurahInMushaf(surahNumber);
+    if (autoplay) {
+      switchMushafTab('text');
+      if (isMobileView()) switchMobileView('mushaf');
+    }
     autoCacheSurahAudio(surahNumber, reciter.id);
   }
 
@@ -2982,6 +2986,8 @@ function applyLanguage(lang) {
 
     if (dom.audio.paused) {
       playAudio();
+      switchMushafTab('text');
+      if (isMobileView()) switchMobileView('mushaf');
     } else {
       dom.audio.pause();
     }

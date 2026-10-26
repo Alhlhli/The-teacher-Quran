@@ -193,58 +193,83 @@ button, [role="button"], .surah-card, .mobile-nav-tab, .mushaf-tab, .reciter-car
   .media-btn.speed-btn { width: 52px; font-size: 0.86rem; font-weight: 700; }
   .player-island { padding-bottom: 8px; }
 
-  /* --- 3.7 شريط الحالة: نحيف ويراعي المنطقة الآمنة السفلية --- */
+  /* --- 3.7 شريط الحالة: نحيف ويُخفى في وضع المصحف على الجوال لتوفير المساحة --- */
   .status-strip {
-    flex: 0 0 auto; height: auto; min-height: 24px;
-    padding: 3px 14px calc(3px + env(safe-area-inset-bottom, 0));
-    font-size: 0.72rem;
+    flex: 0 0 auto; height: auto; min-height: 22px;
+    padding: 2px 12px calc(2px + env(safe-area-inset-bottom, 0));
+    font-size: 0.7rem;
   }
   .status-right { display: none; }
+  .app-container[data-mobile-view="mushaf"] .status-strip { display: none !important; }
+  .app-container[data-mobile-view="mushaf"] .mobile-nav-bar { min-height: 42px; padding-block: 2px; }
+  .app-container[data-mobile-view="mushaf"] .mobile-nav-tab { min-height: 32px; padding: 4px 12px; font-size: 0.82rem; }
+  .app-container[data-mobile-view="mushaf"] .mobile-icon-btn { width: 36px; height: 36px; font-size: 1.1rem; }
 
-  /* --- 3.8 عارض المصحف: أدوات مدمجة تترك مساحة للقراءة --- */
-  .mushaf-panel-header { align-items: center; }
+  /* --- 3.8 عارض المصحف: شريط علوي مدمج للغاية يترك أكبر مساحة ممكنة لصفحة المصحف --- */
+  .mushaf-panel-header {
+    display: flex; align-items: center; gap: 4px;
+    padding-inline-end: 6px; min-height: 38px;
+  }
   .mushaf-tabs {
     display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
     overscroll-behavior-x: contain; scroll-snap-type: x proximity; flex: 1 1 auto; min-width: 0;
-    -webkit-mask-image: linear-gradient(to left, #000 88%, transparent);
-            mask-image: linear-gradient(to left, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to left, #000 92%, transparent);
+            mask-image: linear-gradient(to left, #000 92%, transparent);
   }
   .mushaf-tabs::-webkit-scrollbar { display: none; }
-  .mushaf-tab { flex: 0 0 auto; min-height: 46px; padding: 0 14px; font-size: 0.88rem; scroll-snap-align: start; white-space: nowrap; }
+  .mushaf-tab { flex: 0 0 auto; min-height: 36px; padding: 0 10px; font-size: 0.82rem; scroll-snap-align: start; white-space: nowrap; }
   .mushaf-panel-expand { display: none; }                /* لا معنى للتكبير في عرض الجوال الكامل */
 
-  .mushaf-sub-bar { padding: 6px 10px; }
-  .mushaf-sub-bar select, .mushaf-quicknav select, .quicknav-select { height: 44px; font-size: 16px; border-radius: 10px; }
-  .zoom-btn, .font-zoom-btn { width: 44px; height: 44px; font-size: 1.2rem; }
-  .page-nav-btn { min-height: 44px; padding: 0 14px; }
+  .mushaf-sub-bar { padding: 4px 8px; min-height: 36px; }
+  .mushaf-sub-bar select { height: 34px; font-size: 0.82rem; border-radius: 8px; }
+  .zoom-btn, .font-zoom-btn { width: 34px; height: 34px; font-size: 1.05rem; }
+  .page-nav-btn { min-height: 32px; padding: 0 10px; }
 
-  /* التنقل السريع: صفّان مرتبان (سورة + آية) ثم (السابقة | التفسير | التالية) */
-  .mushaf-quicknav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 10px; }
-  .mushaf-quicknav .quicknav-select { flex: 1 1 calc(100% - 96px); min-width: 0; max-width: none; order: 0; }
-  .mushaf-quicknav .quicknav-select.quicknav-verse { flex: 0 0 88px; max-width: none; }
-  .mushaf-quicknav #btnQuickPrevVerse { order: 1; flex: 1 1 27%; }
-  .mushaf-quicknav #btnQuickSwitch    { order: 2; flex: 2 1 38%; }
-  .mushaf-quicknav #btnQuickNextVerse { order: 3; flex: 1 1 27%; }
-  .mushaf-quicknav #btnQuickFollow    { order: 4; flex: 1 1 100%; }
-  .mushaf-quicknav .page-nav-btn { min-width: 0; padding: 0 6px; font-size: 0.8rem; white-space: nowrap; justify-content: center; }
+  /* التنقل السريع: صف واحد فائق الدمج (السورة + الآية + السابقة + التفسير + التالية) لتوفير مساحة المصحف */
+  .mushaf-quicknav {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 4px; padding: 4px 8px;
+  }
+  .mushaf-quicknav .quicknav-select {
+    flex: 1 1 115px; min-width: 95px; max-width: none;
+    height: 32px; font-size: 0.82rem; padding: 0 6px; border-radius: 8px; order: 0;
+  }
+  .mushaf-quicknav .quicknav-select.quicknav-verse {
+    flex: 0 0 58px; min-width: 52px; max-width: 68px;
+    height: 32px; font-size: 0.82rem; padding: 0 4px; order: 1;
+  }
+  .mushaf-quicknav #btnQuickPrevVerse { order: 2; flex: 0 0 auto; }
+  .mushaf-quicknav #btnQuickSwitch    { order: 3; flex: 0 1 auto; }
+  .mushaf-quicknav #btnQuickNextVerse { order: 4; flex: 0 0 auto; }
+  .mushaf-quicknav #btnQuickFollow    { order: 5; flex: 1 1 100%; height: 30px; }
+  .mushaf-quicknav .page-nav-btn {
+    min-height: 32px; height: 32px; min-width: 0;
+    padding: 0 8px; font-size: 0.76rem; border-radius: 8px;
+    white-space: nowrap; justify-content: center;
+  }
 
-
-  /* استغلال عرض الشاشة لصفحة المصحف على الجوال مع الحفاظ على الهوامش الجانبية */
-  .quran-verses-container { padding: 6px 4px; }
-  .mushaf-real-page { padding: 12px 10px; margin-bottom: 14px; }
+  /* استغلال كامل عرض وارتفاع الشاشة لصفحة المصحف على الجوال */
+  .quran-text-header { margin-bottom: 6px; padding-bottom: 6px; }
+  .surah-vocalized-title { font-size: 1.25rem; margin-bottom: 2px; }
+  .basmala-text { font-size: 1.35rem; }
+  .quran-verses-container { padding: 2px 2px; }
+  .mushaf-real-page { padding: 8px 8px; margin-bottom: 10px; }
   .mushaf-panel-body {
-    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0));
+    padding: 6px 6px calc(10px + env(safe-area-inset-bottom, 0));
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
 
-  /* زر طيّ/فتح أدوات العرض (يُضاف بالـ JS) */
+  /* زر طيّ/فتح أدوات العرض مدمج داخل شريط تبويبات المصحف بلا سطر إضافي */
   .mx-toggle-tools {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    width: calc(100% - 20px); margin: 6px 10px 0; min-height: 42px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    flex: 0 0 auto; height: 30px; padding: 0 10px; margin: 0;
     background: var(--btn-bg); color: var(--text-primary);
-    border: 1px solid var(--card-border); border-radius: 12px;
-    font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--card-border); border-radius: 8px;
+    font: inherit; font-size: 0.76rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  .mx-toggle-tools.active {
+    border-color: var(--accent-gold); color: var(--accent-gold);
   }
   .mushaf-sub-bar.mx-collapsed { display: none !important; }   /* app.js يضبط display مضمّناً أحياناً */
 
@@ -281,23 +306,28 @@ button, [role="button"], .surah-card, .mobile-nav-tab, .mushaf-tab, .reciter-car
   to   { transform: translateY(0);    opacity: 1; }
 }
 
-/* وضع المشغل المصغّر (يوفّر مساحة للقراءة) */
+/* وضع المشغل المصغّر (يوفّر أكبر مساحة للقراءة في الجوال) */
 @media (max-width: 860px) {
   .mx-player-handle {
     display: flex; align-items: center; justify-content: center;
-    width: 100%; height: 22px; margin: -4px 0 2px; padding: 0;
-    background: none; border: 0; color: var(--text-secondary); cursor: pointer; font-size: 0.8rem;
+    width: 100%; height: 16px; margin: -4px 0 0; padding: 0;
+    background: none; border: 0; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem;
   }
-  .mx-player-handle::before { content: ""; width: 38px; height: 4px; border-radius: 2px; background: var(--card-border); }
-  .player-island.mx-mini .player-seek-row { height: 24px; }
-  .player-island.mx-mini .progress-container { height: 24px; }
-  .player-island.mx-mini .progress-container > .slider-fill { top: 9px; }
+  .mx-player-handle::before { content: ""; width: 34px; height: 4px; border-radius: 2px; background: var(--card-border); }
+  .app-container > .player-island-wrapper .player-island.mx-mini {
+    padding: 4px 10px 4px;
+    border-radius: 14px 14px 0 0;
+  }
+  .player-island.mx-mini .player-seek-row { height: 20px; margin: 0; }
+  .player-island.mx-mini .progress-container { height: 20px; }
+  .player-island.mx-mini .progress-container > .slider-fill { top: 7px; }
+  .player-island.mx-mini .player-controls-row { min-height: 38px; gap: 4px; }
   .player-island.mx-mini .player-info-box { display: none; }
   .player-island.mx-mini .player-buttons-box > #btnStop,
   .player-island.mx-mini .player-buttons-box > #btnRepeat { display: none; }
   .player-island.mx-mini .player-buttons-box { justify-content: space-evenly; }
-  .player-island.mx-mini .media-btn { height: 40px; }
-  .player-island.mx-mini .media-btn.play-pause-btn { width: 48px; height: 48px; }
+  .player-island.mx-mini .media-btn { width: 36px; height: 34px; }
+  .player-island.mx-mini .media-btn.play-pause-btn { width: 40px; height: 40px; }
 }
 
 /* ---------- 3b) شريط التنقل العلوي على الهواتف المتوسطة ---------- */
